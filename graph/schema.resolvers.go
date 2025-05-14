@@ -16,9 +16,64 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
 }
 
+// UpdateTodo is the resolver for the updateTodo field.
+func (r *mutationResolver) UpdateTodo(ctx context.Context, input model.EditTodo) (*model.Todo, error) {
+	panic(fmt.Errorf("not implemented: UpdateTodo - updateTodo"))
+}
+
+// DeleteTodo is the resolver for the deleteTodo field.
+func (r *mutationResolver) DeleteTodo(ctx context.Context, id string) (bool, error) {
+	panic(fmt.Errorf("not implemented: DeleteTodo - deleteTodo"))
+}
+
+// Register is the resolver for the register field.
+func (r *mutationResolver) Register(ctx context.Context, input model.RegisterInput) (*model.AuthPayload, error) {
+	return r.Service.User.Register(input)
+}
+
+// Login is the resolver for the login field.
+func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthPayload, error) {
+	panic(fmt.Errorf("not implemented: Login - login"))
+}
+
+// UpdateUser is the resolver for the updateUser field.
+func (r *mutationResolver) UpdateUser(ctx context.Context, input model.EditUser) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: UpdateUser - updateUser"))
+}
+
+// DeleteUser is the resolver for the deleteUser field.
+func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (bool, error) {
+	panic(fmt.Errorf("not implemented: DeleteUser - deleteUser"))
+}
+
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	panic(fmt.Errorf("not implemented: Todos - todos"))
+}
+
+// TodoByID is the resolver for the todoById field.
+func (r *queryResolver) TodoByID(ctx context.Context, id string) (*model.Todo, error) {
+	panic(fmt.Errorf("not implemented: TodoByID - todoById"))
+}
+
+// TodoByUser is the resolver for the todoByUser field.
+func (r *queryResolver) TodoByUser(ctx context.Context, userID string) ([]*model.Todo, error) {
+	panic(fmt.Errorf("not implemented: TodoByUser - todoByUser"))
+}
+
+// Users is the resolver for the users field.
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented: Users - users"))
+}
+
+// UserByID is the resolver for the userById field.
+func (r *queryResolver) UserByID(ctx context.Context, id string) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: UserByID - userById"))
+}
+
+// UserByEmail is the resolver for the userByEmail field.
+func (r *queryResolver) UserByEmail(ctx context.Context, email string) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: UserByEmail - userByEmail"))
 }
 
 // Mutation returns MutationResolver implementation.

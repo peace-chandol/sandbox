@@ -1,2 +1,5 @@
 run:
-	go run ./server.go
+	docker compose up --build -d
+
+build:
+	docker compose build

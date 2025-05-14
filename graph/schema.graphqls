@@ -2,6 +2,8 @@
 #
 # https://gqlgen.com/getting-started/
 
+directive @auth(role: [Role!]!) on FIELD_DEFINITION
+
 type Todo {
   id: ID!
   text: String!
@@ -9,13 +11,27 @@ type Todo {
   user: User!
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 type User {
   id: ID!
   name: String!
+  email: String!
+  role: Role!
+  todo: [Todo!]!
 }
 
 type Query {
   todos: [Todo!]!
+  todoById(id: ID!): Todo
+  todoByUser(userId: ID!): [Todo!]!
+
+  users: [User!]! @auth(role: [ADMIN])
+  userById(id: ID!): User
+  userByEmail(email: String!): User
 }
 
 input NewTodo {
@@ -23,6 +39,42 @@ input NewTodo {
   userId: String!
 }
 
+input EditTodo {
+  text: String!
+  done: Boolean!
+  userId: String!
+}
+
+input EditUser {
+  name: String!
+  password: String!
+}
+
+input RegisterInput {
+  name: String!
+  email: String!
+  password: String!
+  role: Role = USER
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  updateTodo(input: EditTodo!): Todo!
+  deleteTodo(id: ID!): Boolean!
+
+  register(input: RegisterInput!): AuthPayload!
+  login(input: LoginInput!): AuthPayload!
+
+  updateUser(input: EditUser!): User!
+  deleteUser(id: ID!): Boolean!
 }
