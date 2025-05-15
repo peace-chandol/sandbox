@@ -15,6 +15,8 @@ type User struct {
 	Email    string    `gorm:"not null"`
 	Password string    `gorm:"not null"`
 	Role     string    `gorm:"not null"`
+
+	Todos []Todo `gorm:"foreignKey:UserID"`
 }
 
 type Todo struct {

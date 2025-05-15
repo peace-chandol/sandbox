@@ -33,7 +33,7 @@ func (r *mutationResolver) Register(ctx context.Context, input model.RegisterInp
 
 // Login is the resolver for the login field.
 func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthPayload, error) {
-	panic(fmt.Errorf("not implemented: Login - login"))
+	return r.Service.User.Login(input)
 }
 
 // UpdateUser is the resolver for the updateUser field.
@@ -63,17 +63,17 @@ func (r *queryResolver) TodoByUser(ctx context.Context, userID string) ([]*model
 
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Users - users"))
+	return r.Service.User.Users()
 }
 
 // UserByID is the resolver for the userById field.
 func (r *queryResolver) UserByID(ctx context.Context, id string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: UserByID - userById"))
+	return r.Service.User.UserByID(id)
 }
 
 // UserByEmail is the resolver for the userByEmail field.
 func (r *queryResolver) UserByEmail(ctx context.Context, email string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: UserByEmail - userByEmail"))
+	return r.Service.User.UserByEmail(email)
 }
 
 // Mutation returns MutationResolver implementation.

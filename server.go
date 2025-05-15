@@ -37,6 +37,9 @@ func main() {
 		graph.NewExecutableSchema(
 			graph.Config{
 				Resolvers: graph.NewResolver(db),
+				Directives: graph.DirectiveRoot{
+					Auth: middleware.AuthDirective,
+				},
 			},
 		),
 	)
