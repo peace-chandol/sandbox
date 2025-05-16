@@ -6,9 +6,11 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/peace/sandbox/graph/model"
+	"github.com/peace/sandbox/internal/middleware"
 )
 
 // CreateTodo is the resolver for the createTodo field.
@@ -38,12 +40,17 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.EditUser) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: UpdateUser - updateUser"))
+	user := middleware.ForContext(ctx)
+	if user == nil {
+		return nil, errors.New("Unauthenticated: user not found")
+	}
+
+	return r.Service.User.UpdateUser(user.ID.String(), input)
 }
 
 // DeleteUser is the resolver for the deleteUser field.
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (bool, error) {
-	panic(fmt.Errorf("not implemented: DeleteUser - deleteUser"))
+	return r.Service.User.DeleteUser(id)
 }
 
 // Todos is the resolver for the todos field.

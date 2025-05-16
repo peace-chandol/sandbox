@@ -114,3 +114,40 @@ func (s *UserService) Login(input model.LoginInput) (*model.AuthPayload, error) 
 
 	return payload, nil
 }
+
+func (s *UserService) UpdateUser(id string, input model.EditUser) (*model.User, error) {
+	hashedPassword, err := utils.HashPassword(input.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	input.Password = hashedPassword
+
+	idParse, err := uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+
+	user := &models.User{
+		ID:       idParse,
+		Name:     input.Name,
+		Password: input.Password,
+	}
+
+	var userModel *models.User
+
+	userModel, err = s.Repo.Update(user)
+	if err != nil {
+		return nil, err
+	}
+
+	return mapper.MapUserToModelWithoutTodos(userModel), nil
+}
+
+func (s *UserService) DeleteUser(id string) (bool, error) {
+	if err := s.Repo.Delete(id); err != nil {
+		return false, err
+	}
+
+	return true, nil
+}

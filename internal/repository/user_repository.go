@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type TodoRepository struct {
+type UserRepository struct {
 	DB *gorm.DB
 }
 
@@ -31,10 +31,32 @@ func (r *UserRepository) Create(user *models.User) error {
 	return r.DB.Create(user).Error
 }
 
-func (r *UserRepository) Update(user *models.User) error {
-	return r.DB.Save(user).Error
+func (r *UserRepository) Update(userInput *models.User) (*models.User, error) {
+	var user models.User
+	if result := r.DB.Where("id = ?", userInput.ID).First(&user); result.Error != nil {
+		return nil, result.Error
+	}
+
+	user.Name = userInput.Name
+	user.Password = userInput.Password
+
+	if err := r.DB.Save(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 func (r *UserRepository) Delete(id string) error {
-	return r.DB.Delete(&models.User{}, "id = ?", id).Error
+	return r.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Delete(&models.Todo{}, "user_id = ?", id).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Delete(&models.User{}, "id = ?", id).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }

@@ -2,6 +2,6 @@ package repository
 
 import "gorm.io/gorm"
 
-type UserRepository struct {
+type TodoRepository struct {
 	DB *gorm.DB
 }
